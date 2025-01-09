@@ -1,0 +1,11 @@
+{
+  "domain": "ctek_nanogrid_air",
+  "name": "CTEK Nanogrid Air",
+  "documentation": "https://github.com/FreshJonte/CTEK-Nanogrid-Air",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": ["@FreshJonte"],
+  "config_flow": true,
+  "version": "0.1.0"
+  
+}
