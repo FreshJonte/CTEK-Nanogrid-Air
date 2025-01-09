@@ -74,6 +74,9 @@ You can download the latest firmware and instructions from the following links:
 - [CTEK Firmware and Software](https://www.ctek.com/support/software-firmware#evsoftware)
 - [Firmware Upgrade Instructions](https://www.ctek.com/storage/497AC4458015B3E8FAD37E648F487262A195814233840026D8BD92B258D080FF/86db5b7884c54f67bb18ecbddfe5b7cf/pdf/media/359668f65f084697984b036c4abd30fe/Firmware%20Upgrade%20Instructions%20-%20Nanogrid%20Air%203007%20-%2020231009002.pdf)
 
+## API Documentation
+
+For detailed information on the CTEK Nanogrid Air API, you can refer to the official [Local API Instructions for Nanogrid Air](https://www.ctek.com/storage/58B03CE11555207527045C1182860D36F0612F00232E61B4C383A0F15E1486BB/7b2ea9914c73429092a6426a8103da71/pdf/media/45fb7752636d4a5a8e5aad5b6b264074/Local%20API%20Instructions%20-%20Nanogrid%20Air%203007%20-%2020231009003.pdf).
 
 ## Troubleshooting
 
