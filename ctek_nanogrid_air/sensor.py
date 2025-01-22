@@ -59,7 +59,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class CTEKSensor(SensorEntity):
     """Representation of a single CTEK Nanogrid Air sensor."""
 
-    def __init__(self, session, host, port, auth, sensor_id, name, endpoint, json_path, unit_of_measurement=None, icon=None):
+    def __init__(self, session, host, port, auth, sensor_id, name, endpoint, json_path, unit_of_measurement=None, icon=None, transform=None):
         self._session = session
         self._host = host
         self._port = port
