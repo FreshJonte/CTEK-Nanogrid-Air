@@ -71,6 +71,7 @@ class CTEKSensor(SensorEntity):
         self._unit_of_measurement = unit_of_measurement
         self._icon = icon
         self._state = None
+        self.transform = transform  # Valfri parameter
 
     @property
     def name(self):
