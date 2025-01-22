@@ -166,15 +166,20 @@ class CTEKSensor(SensorEntity):
             self._state = None
 
     def _extract_value(self, data, json_path):
-        """Extract a value from a nested JSON object using a dotted path."""
-        keys = json_path.split(".")
-        value = data
-        for key in keys:
-            if isinstance(value, list):
+    """Extract a value from a nested JSON object using a dotted path."""
+    keys = json_path.split(".")
+    value = data
+    for key in keys:
+        if isinstance(value, list):
+            try:
+                # Försök omvandla nyckeln till ett index och hämta värdet
                 value = value[int(key)] if key.isdigit() else None
-            else:
-                value = value.get(key)
-            if value is None:
-                _LOGGER.debug(f"Key {key} not found while parsing JSON for {self._name}.")
+            except (IndexError, ValueError):
+                _LOGGER.warning(f"Index {key} out of range while parsing JSON for {self._name}.")
                 return None
-        return value
+        else:
+            value = value.get(key)
+        if value is None:
+            _LOGGER.debug(f"Key {key} not found while parsing JSON for {self._name}.")
+            return None
+    return value
