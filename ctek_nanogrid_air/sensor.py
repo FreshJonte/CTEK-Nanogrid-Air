@@ -32,7 +32,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         CTEKSensor(session, host, port, auth, "wifi_rssi", "WiFi Signal Strength", "/status", "wifiInfo.rssi", unit_of_measurement="dBm", icon="mdi:signal"),
 
         # Meter endpoint entities
-        CTEKSensor(session, host, port, auth, "active_power_in", "Active Power In", "/meter", "activePowerIn", unit_of_measurement="W", icon="mdi:meter-electric"),
+        CTEKSensor(session, host, port, auth, "active_power_in", "Active Power In", "/meter", "activePowerIn", unit_of_measurement="W", icon="mdi:meter-electric", transform=lambda x: x * 1000),
         CTEKSensor(session, host, port, auth, "active_power_out", "Active Power Out", "/meter", "activePowerOut", unit_of_measurement="W", icon="mdi:flash-off"),
         CTEKSensor(session, host, port, auth, "current_phase_1", "Current Phase 1", "/meter", "current.0", unit_of_measurement="A", icon="mdi:current-ac"),
         CTEKSensor(session, host, port, auth, "current_phase_2", "Current Phase 2", "/meter", "current.1", unit_of_measurement="A", icon="mdi:current-ac"),
@@ -141,6 +141,11 @@ class CTEKSensor(SensorEntity):
                     return
 
                 data = await response.json()
+
+                 # If there is a transform, apply it
+                if self.transform:
+                    data = self.transform(data)
+                
                 self._state = self._extract_value(data, self._json_path)
                 _LOGGER.debug(f"Updated state for {self._name}: {self._state}")
 
