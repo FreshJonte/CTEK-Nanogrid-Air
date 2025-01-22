@@ -13,13 +13,18 @@ class CTEKNanogridAirConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             # Validate the input here if needed
-            return self.async_create_entry(title="CTEK Nanogrid Air", data=user_input)
+            # Example: Ensure "host" is a valid hostname or IP address
+            if not user_input["host"]:
+                errors["host"] = "Host is required."
+            else:
+                # Input seems valid; create the entry
+                return self.async_create_entry(title="CTEK Nanogrid Air", data=user_input)
 
         # Form schema
         data_schema = vol.Schema({
             vol.Required("host"): str,
             vol.Optional("port", default=80): int,
-            vol.Required("username"): str,
+            vol.Required("username", default="ctek"): str,
             vol.Required("password"): str,
         })
 
