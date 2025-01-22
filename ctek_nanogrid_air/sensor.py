@@ -142,12 +142,15 @@ class CTEKSensor(SensorEntity):
                     return
 
                 data = await response.json()
+                # Extrahera värdet först
+                raw_value = self._extract_value(data, self._json_path)
+            
+                # Om transform finns, tillämpa den
+                if self.transform and raw_value is not None:
+                    self._state = self.transform(raw_value)
+                else:
+                    self._state = raw_value
 
-                 # If there is a transform, apply it
-                if self.transform:
-                    data = self.transform(data)
-                
-                self._state = self._extract_value(data, self._json_path)
                 _LOGGER.debug(f"Updated state for {self._name}: {self._state}")
 
         except asyncio.TimeoutError:
