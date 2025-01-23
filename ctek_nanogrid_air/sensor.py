@@ -49,7 +49,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
         CTEKSensor(session, host, port, auth, "charger_connection_status", "Charger Connection Status", "/evse", "0.connection_status", icon="mdi:ev-plug-type2"),
         CTEKSensor(session, host, port, auth, "charger_outlet_1_state", "Charger Outlet 1 State", "/evse", "0.evse.0.state", icon="mdi:ev-plug-type2"),
         CTEKSensor(session, host, port, auth, "charger_outlet_1_energy", "Charger Outlet 1 Energy", "/evse", "0.evse.0.energy", unit_of_measurement="kWh", icon="mdi:ev-plug-type2", transform=lambda x: x / 1000),
-        CTEKSensor(session, host, port, auth, "charger_outlet_1_current", "Charger Outlet 1 Current", "/evse", "0.evse.0.current", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "charger_outlet_1_current_phase_1", "Charger Outlet 1 Current Phase 1", "/evse", "0.evse.0.current.0", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "charger_outlet_1_current_phase_2", "Charger Outlet 1 Current Phase 2", "/evse", "0.evse.0.current.1", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "charger_outlet_1_current_phase_3", "Charger Outlet 1 Current Phase 3", "/evse", "0.evse.0.current.2", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
+        
     ]
 
     async_add_entities(sensors, True)
