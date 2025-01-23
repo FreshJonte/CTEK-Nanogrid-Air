@@ -32,7 +32,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
         CTEKSensor(session, host, port, auth, "wifi_rssi", "WiFi Signal Strength", "/status", "wifiInfo.rssi", unit_of_measurement="dBm", icon="mdi:signal"),
 
         # Meter endpoint entities
-        CTEKSensor(session, host, port, auth, "active_power_in", "Active Power In", "/meter", "activePowerIn", unit_of_measurement="W", icon="mdi:meter-electric", transform=lambda x: x * 1000),
+        CTEKSensor(session, host, port, auth, "active_power_in_watt", "Active Power In Watt", "/meter", "activePowerIn", unit_of_measurement="W", icon="mdi:meter-electric", transform=lambda x: x * 1000),
+        CTEKSensor(session, host, port, auth, "active_power_in_kw", "Active Power In Kw", "/meter", "activePowerIn", unit_of_measurement="kW", icon="mdi:meter-electric"),        
         CTEKSensor(session, host, port, auth, "active_power_out", "Active Power Out", "/meter", "activePowerOut", unit_of_measurement="W", icon="mdi:flash-off"),
         CTEKSensor(session, host, port, auth, "current_phase_1", "Current Phase 1", "/meter", "current.0", unit_of_measurement="A", icon="mdi:current-ac"),
         CTEKSensor(session, host, port, auth, "current_phase_2", "Current Phase 2", "/meter", "current.1", unit_of_measurement="A", icon="mdi:current-ac"),
@@ -47,10 +48,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
         CTEKSensor(session, host, port, auth, "charger_serial", "Charger Serial", "/evse", "0.cb_id", icon="mdi:ev-plug-type2"),
         CTEKSensor(session, host, port, auth, "charger_connection_status", "Charger Connection Status", "/evse", "0.connection_status", icon="mdi:ev-plug-type2"),
         CTEKSensor(session, host, port, auth, "charger_outlet_1_state", "Charger Outlet 1 State", "/evse", "0.evse.0.state", icon="mdi:ev-plug-type2"),
-        CTEKSensor(session, host, port, auth, "charger_outlet_1_energy", "Charger Outlet 1 Energy", "/evse", "0.evse.0.energy", unit_of_measurement="kWh", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "charger_outlet_1_energy", "Charger Outlet 1 Energy", "/evse", "0.evse.0.energy", unit_of_measurement="kWh", icon="mdi:ev-plug-type2", transform=lambda x: x / 1000),
         CTEKSensor(session, host, port, auth, "charger_outlet_1_current", "Charger Outlet 1 Current", "/evse", "0.evse.0.current", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
-#        CTEKSensor(session, host, port, auth, "charger_outlet_2_state", "Charger Outlet 2 State", "/evse", "evse.1.state", icon="mdi:ev-plug-type2"),
-#        CTEKSensor(session, host, port, auth, "charger_outlet_2_current", "Charger Outlet 2 Current", "/evse", "evse.1.current", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
     ]
 
     async_add_entities(sensors, True)
@@ -71,7 +70,25 @@ class CTEKSensor(SensorEntity):
         self._unit_of_measurement = unit_of_measurement
         self._icon = icon
         self._state = None
-        self.transform = transform  # Valfri parameter
+        self.transform = transform  # Optional parameter
+
+    def _extract_value(self, data, json_path):
+        """Extract a value from a nested JSON object using a dotted path."""
+        keys = json_path.split(".")
+        value = data
+        for key in keys:
+            if isinstance(value, list):
+                try:
+                    value = value[int(key)] if key.isdigit() else None
+                except (IndexError, ValueError):
+                    _LOGGER.warning(f"Index {key} out of range while parsing JSON for {self._name}.")
+                    return None
+            else:
+                value = value.get(key)
+            if value is None:
+                _LOGGER.debug(f"Key {key} not found while parsing JSON for {self._name}.")
+                return None
+        return value
 
     @property
     def name(self):
@@ -85,11 +102,10 @@ class CTEKSensor(SensorEntity):
     @property
     def state(self):
         """Return the current state of the sensor."""
-        # Handle charger_outlet_1_state with custom mapping
         if self._sensor_id == "charger_outlet_1_state":
             state_mapping = {
-                "0": "Available",  # Handle string keys
-                0: "Available",    # Handle integer keys
+                "0": "Available",
+                0: "Available",
                 "1": "Occupied",
                 1: "Occupied",
                 "2": "Charging",
@@ -97,12 +113,9 @@ class CTEKSensor(SensorEntity):
                 "3": "Faulted",
                 3: "Faulted",
             }
-            # Log unexpected states for debugging
             if self._state not in state_mapping:
                 _LOGGER.warning(f"Unexpected state for {self._name}: {self._state}")
             return state_mapping.get(self._state, "Unknown")
-        
-        # For other sensors, return _state as is
         return self._state
 
     @property
@@ -116,7 +129,7 @@ class CTEKSensor(SensorEntity):
     @property
     def device_class(self):
         """Return the device class of the sensor."""
-        if self._sensor_id in ["total_energy_import", "total_energy_export"]:
+        if self._sensor_id in ["total_energy_import", "total_energy_export", "charger_outlet_1_energy"]:
             return "energy"
         if self._sensor_id in ["active_power_in", "active_power_out"]:
             return "power"
@@ -125,7 +138,7 @@ class CTEKSensor(SensorEntity):
     @property
     def state_class(self):
         """Return the state class of the sensor."""
-        if self._sensor_id in ["total_energy_import", "total_energy_export"]:
+        if self._sensor_id in ["total_energy_import", "total_energy_export", "charger_outlet_1_energy"]:
             return "total_increasing"
         if self._sensor_id in ["active_power_in", "active_power_out"]:
             return "measurement"
@@ -142,10 +155,7 @@ class CTEKSensor(SensorEntity):
                     return
 
                 data = await response.json()
-                # Extrahera värdet först
                 raw_value = self._extract_value(data, self._json_path)
-            
-                # Om transform finns, tillämpa den
                 if self.transform and raw_value is not None:
                     self._state = self.transform(raw_value)
                 else:
@@ -164,22 +174,3 @@ class CTEKSensor(SensorEntity):
         except Exception as e:
             _LOGGER.error(f"Unexpected error for {self._name}: {e}. Check device compatibility and logs for details.")
             self._state = None
-
-    def _extract_value(self, data, json_path):
-    """Extract a value from a nested JSON object using a dotted path."""
-    keys = json_path.split(".")
-    value = data
-    for key in keys:
-        if isinstance(value, list):
-            try:
-                # Försök omvandla nyckeln till ett index och hämta värdet
-                value = value[int(key)] if key.isdigit() else None
-            except (IndexError, ValueError):
-                _LOGGER.warning(f"Index {key} out of range while parsing JSON for {self._name}.")
-                return None
-        else:
-            value = value.get(key)
-        if value is None:
-            _LOGGER.debug(f"Key {key} not found while parsing JSON for {self._name}.")
-            return None
-    return value
