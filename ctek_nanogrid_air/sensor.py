@@ -142,12 +142,15 @@ class CTEKSensor(SensorEntity):
                     return
 
                 data = await response.json()
+                # Extrahera värdet först
+                raw_value = self._extract_value(data, self._json_path)
+            
+                # Om transform finns, tillämpa den
+                if self.transform and raw_value is not None:
+                    self._state = self.transform(raw_value)
+                else:
+                    self._state = raw_value
 
-                 # If there is a transform, apply it
-                if self.transform:
-                    data = self.transform(data)
-                
-                self._state = self._extract_value(data, self._json_path)
                 _LOGGER.debug(f"Updated state for {self._name}: {self._state}")
 
         except asyncio.TimeoutError:
@@ -163,15 +166,20 @@ class CTEKSensor(SensorEntity):
             self._state = None
 
     def _extract_value(self, data, json_path):
-        """Extract a value from a nested JSON object using a dotted path."""
-        keys = json_path.split(".")
-        value = data
-        for key in keys:
-            if isinstance(value, list):
+    """Extract a value from a nested JSON object using a dotted path."""
+    keys = json_path.split(".")
+    value = data
+    for key in keys:
+        if isinstance(value, list):
+            try:
+                # Försök omvandla nyckeln till ett index och hämta värdet
                 value = value[int(key)] if key.isdigit() else None
-            else:
-                value = value.get(key)
-            if value is None:
-                _LOGGER.debug(f"Key {key} not found while parsing JSON for {self._name}.")
+            except (IndexError, ValueError):
+                _LOGGER.warning(f"Index {key} out of range while parsing JSON for {self._name}.")
                 return None
-        return value
+        else:
+            value = value.get(key)
+        if value is None:
+            _LOGGER.debug(f"Key {key} not found while parsing JSON for {self._name}.")
+            return None
+    return value
