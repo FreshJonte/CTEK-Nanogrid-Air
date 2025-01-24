@@ -40,30 +40,33 @@ If the configuration is correct, sensors will automatically appear in Home Assis
 ## Sensors Provided
 Here are the sensors available with this integration:
 
-| Sensor ID                      | Friendly Name            | Description                                               |
-|---------------------------------|--------------------------|-----------------------------------------------------------|
-| `device_serial`                 | Device Serial            | The serial number of the device.                          |
-| `device_firmware`               | Device Firmware          | Firmware version of the device.                           |
-| `device_mac`                    | Device MAC               | MAC address of the device.                                |
-| `chargebox_state`               | Chargebox State          | Current state of the chargebox.                           |
-| `wifi_ssid`                     | WiFi SSID                | SSID of the connected WiFi network.                       |
-| `wifi_rssi`                     | WiFi Signal Strength     | WiFi RSSI in dBm, indicating signal strength.             |
-| `active_power_in`               | Active Power In          | Incoming power to the system in Watts.                    |
-| `active_power_out`              | Active Power Out         | Outgoing power from the system in Watts.                  |
-| `current_phase_1`               | Current Phase 1          | Electrical current in Phase 1 in Amperes (A).             |
-| `current_phase_2`               | Current Phase 2          | Electrical current in Phase 2 in Amperes (A).             |
-| `current_phase_3`               | Current Phase 3          | Electrical current in Phase 3 in Amperes (A).             |
-| `voltage_phase_1`               | Voltage Phase 1          | Voltage in Phase 1 in Volts (V).                          |
-| `voltage_phase_2`               | Voltage Phase 2          | Voltage in Phase 2 in Volts (V).                          |
-| `voltage_phase_3`               | Voltage Phase 3          | Voltage in Phase 3 in Volts (V).                          |
-| `total_energy_import`           | Total Energy Import      | Total imported energy measured in Watt-hours (Wh).        |
-| `total_energy_export`           | Total Energy Export      | Total exported energy measured in Watt-hours (Wh).        |
-| `charger_serial`                | Charger Serial           | Serial number of the charger.                             |
-| `charger_connection_status`     | Charger Connection Status| Current connection status of the charger.                 |
-| `charger_outlet_1_state`        | Charger Outlet 1 State   | Current state of the charger outlet 1.                    |
-| `charger_outlet_2_state`        | Charger Outlet 2 State   | Current state of the charger outlet 2.                    |
-| `charger_outlet_1_current`      | Charger Outlet 1 Current | Current output from charger outlet 1 in Amperes (A).      |
-| `charger_outlet_2_current`      | Charger Outlet 2 Current | Current output from charger outlet 2 in Amperes (A).      |
+| Sensor ID                          | Friendly Name                | Description                                                           |
+|------------------------------------|------------------------------|-----------------------------------------------------------------------|
+| `charger_serial`                   | Charger Serial               | Serial number of the charger.                                         |
+| `charger_connection_status`        | Charger Connection Status    | Current connection status of the charger.                             |
+| `charger_outlet_1_state`           | Charger Outlet 1 State       | Current state of the charger outlet 1.                                |
+| `charger_outlet_1_energy`          | Charger Outlet 1 Energy      | Total energy used by charger outlet 1 in kilowatt-hours (kWh).         |
+| `charger_outlet_1_power`           | Charger Outlet 1 Power       | Current power usage of charger outlet 1 in kilowatts (kW).            |
+| `charger_outlet_1_current_phase_1` | Charger Outlet 1 Current Phase 1 | Current output from charger outlet 1 in Phase 1 (Amperes).       |
+| `charger_outlet_1_current_phase_2` | Charger Outlet 1 Current Phase 2 | Current output from charger outlet 1 in Phase 2 (Amperes).       |
+| `charger_outlet_1_current_phase_3` | Charger Outlet 1 Current Phase 3 | Current output from charger outlet 1 in Phase 3 (Amperes).       |
+| `device_serial`                    | Device Serial                | The serial number of the device.                                      |
+| `device_firmware`                  | Device Firmware              | Firmware version of the device.                                       |
+| `device_mac`                       | Device MAC                   | MAC address of the device.                                            |
+| `chargebox_state`                  | Chargebox State              | Current state of the chargebox.                                       |
+| `wifi_ssid`                        | WiFi SSID                    | SSID of the connected WiFi network.                                   |
+| `wifi_rssi`                        | WiFi Signal Strength         | WiFi RSSI in dBm, indicating signal strength.                         |
+| `active_power_in_watt`             | Active Power In (Watt)       | Incoming power to the system in Watts.                                |
+| `active_power_in_kw`               | Active Power In (kW)         | Incoming power to the system in kilowatts.                            |
+| `active_power_out`                 | Active Power Out             | Outgoing power from the system in Watts.                              |
+| `current_phase_1`                  | Current Phase 1              | Electrical current in Phase 1 in Amperes (A).                         |
+| `current_phase_2`                  | Current Phase 2              | Electrical current in Phase 2 in Amperes (A).                         |
+| `current_phase_3`                  | Current Phase 3              | Electrical current in Phase 3 in Amperes (A).                         |
+| `voltage_phase_1`                  | Voltage Phase 1              | Voltage in Phase 1 in Volts (V).                                      |
+| `voltage_phase_2`                  | Voltage Phase 2              | Voltage in Phase 2 in Volts (V).                                      |
+| `voltage_phase_3`                  | Voltage Phase 3              | Voltage in Phase 3 in Volts (V).                                      |
+| `total_energy_import`              | Total Energy Import          | Total imported energy measured in kilowatt-hours (kWh).               |
+| `total_energy_export`              | Total Energy Export          | Total exported energy measured in kilowatt-hours (kWh).               |
 
 ## Firmware Update
 
