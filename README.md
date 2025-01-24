@@ -19,11 +19,28 @@ This integration provides the following sensor data for your CTEK Nanogrid Air d
 
 ## Installation
 
+### Installation via HACS (Recommended)
+1. Open Home Assistant and go to the **HACS** section in the sidebar.
+2. Click on the **Custom repositories** tab (found under **Settings** in HACS).
+3. In the **Custom repositories** section, click the **+** button in the bottom right corner.
+4. Enter the following repository URL: https://github.com/FreshJonte/CTEK-Nanogrid-Air
+5. Select **Integration** as the Type.
+6. Click **Add**.
+7. Go back to the **Integrations** tab in HACS and click the **+** button at the bottom right.
+8. Search for **CTEK Nanogrid Air** and select it from the list.
+9. Follow the on-screen instructions to install the integration.
+10. Once installed, restart Home Assistant to apply the changes.
+
 ### Manual Installation
+If you prefer to install the integration manually, follow these steps:
+
 1. Download this repository as a ZIP file and extract it.
-2. Copy the folder `ctek_nanogrid_air` to your Home Assistant `custom_components` directory:
-If the `custom_components` directory doesn’t exist, create it.
-3. Restart Home Assistant.
+2. Copy the `ctek_nanogrid_air` folder to your Home Assistant `custom_components` directory:
+- If the `custom_components` directory doesn’t exist, create it.
+- The directory structure should be:  
+  `custom_components/ctek_nanogrid_air/`
+3. Restart Home Assistant to complete the installation and enable the integration.
+
 
 ### Configuration
 1. In Home Assistant, go to **Settings** > **Devices & Services** > **Integrations**.
