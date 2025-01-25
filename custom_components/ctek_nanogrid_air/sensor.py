@@ -110,14 +110,22 @@ class CTEKSensor(SensorEntity):
             state_mapping = {
                 "0": "Available",
                 0: "Available",
-                "1": "Occupied",
-                1: "Occupied",
+                "1": "Preparing",
+                1: "Preparing",
                 "2": "Charging",
                 2: "Charging",
                 "3": "Suspended by charger",
                 3: "Suspended by charger",
                 "4": "Suspended by vehicle",
-                4: "Suspended by vehicle",                
+                4: "Suspended by vehicle",
+                "5": "Finishing",
+                5: "Finishing",
+                "6": "Reserved",
+                6: "Reserved",
+                "7": "Unavailable",
+                7: "Unavailable",
+                "8": "Faulted",
+                8: "Faulted",
             }
             if self._state not in state_mapping:
                 _LOGGER.warning(f"Unexpected state for {self._name}: {self._state}")
