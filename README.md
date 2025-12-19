@@ -48,7 +48,7 @@ If you prefer to install the integration manually, follow these steps:
 3. Enter the following details:
 - **Host**: The IP address of your CTEK device.
 - **Port**: The API port (default: `80`).
-- **Username**: Your API username.
+- **Username**: Your API username (default: `ctek`).
 - **Password**: Your API password.
 4. Click **Submit**.
 
