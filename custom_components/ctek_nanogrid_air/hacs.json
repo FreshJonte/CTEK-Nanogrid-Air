@@ -1,7 +1,0 @@
-{
-  "name": "CTEK Nanogrid Air",
-  "content_in_root": false,
-  "domain": "ctek_nanogrid_air",
-  "homeassistant": "2024.12.0",
-  "homeassistant_type": "integration"
-}
