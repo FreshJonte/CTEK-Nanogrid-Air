@@ -6,6 +6,6 @@
   "dependencies": [],
   "codeowners": ["@FreshJonte"],
   "config_flow": true,
-  "version": "1.0.3"
+  "version": "1.1.0"
   
 }
