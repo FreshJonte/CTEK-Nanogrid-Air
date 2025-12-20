@@ -67,9 +67,9 @@ Here are the sensors available with this integration:
 | `charger_outlet_1_current_phase_1` | Charger Outlet 1 Current Phase 1 | Current output from charger outlet 1 in Phase 1 (Amperes).       |
 | `charger_outlet_1_current_phase_2` | Charger Outlet 1 Current Phase 2 | Current output from charger outlet 1 in Phase 2 (Amperes).       |
 | `charger_outlet_1_current_phase_3` | Charger Outlet 1 Current Phase 3 | Current output from charger outlet 1 in Phase 3 (Amperes).       |
-| `device_serial`                    | Device Serial                | The serial number of the device.                                      |
-| `device_firmware`                  | Device Firmware              | Firmware version of the device.                                       |
-| `device_mac`                       | Device MAC                   | MAC address of the device.                                            |
+| `device_serial`                    | Device Serial                | The serial number of the Nanogrid Air device.                                      |
+| `device_firmware`                  | Device Firmware              | Firmware version of the Nanogrid Air device.                                       |
+| `device_mac`                       | Device MAC                   | MAC address of the Nanogrid Air device.                                            |
 | `chargebox_state`                  | Chargebox State              | Current state of the chargebox.                                       |
 | `wifi_ssid`                        | WiFi SSID                    | SSID of the connected WiFi network.                                   |
 | `wifi_rssi`                        | WiFi Signal Strength         | WiFi RSSI in dBm, indicating signal strength.                         |
