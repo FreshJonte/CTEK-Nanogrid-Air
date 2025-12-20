@@ -43,16 +43,32 @@ async def async_setup_entry(hass, entry, async_add_entities):
         CTEKSensor(session, host, port, auth, "voltage_phase_3", "Voltage Phase 3", "/meter", "voltage.2", unit_of_measurement="V", icon="mdi:flash"),
         CTEKSensor(session, host, port, auth, "total_energy_import", "Total Energy Import", "/meter", "totalEnergyActiveImport", unit_of_measurement="kWh", icon="mdi:flash"),
         CTEKSensor(session, host, port, auth, "total_energy_export", "Total Energy Export", "/meter", "totalEnergyActiveExport", unit_of_measurement="kWh", icon="mdi:flash-off"),
+        CTEKSensor(session, host, port, auth, "meter_vendor", "Meter Vendor", "/status", "meterInfo.vendor", icon="mdi:meter-electric"),
+        CTEKSensor(session, host, port, auth, "meter_type", "Meter Type", "/status", "meterInfo.type", icon="mdi:meter-electric"),
+        CTEKSensor(session, host, port, auth, "meter_id", "Meter ID", "/status", "meterInfo.id", icon="mdi:meter-electric"),        
 
         # EVSE endpoint entities
-        CTEKSensor(session, host, port, auth, "charger_serial", "Charger Serial", "/evse", "0.cb_id", icon="mdi:ev-plug-type2"),
-        CTEKSensor(session, host, port, auth, "charger_connection_status", "Charger Connection Status", "/evse", "0.connection_status", icon="mdi:ev-plug-type2"),
-        CTEKSensor(session, host, port, auth, "charger_outlet_1_state", "Charger Outlet 1 State", "/evse", "0.evse.0.state", icon="mdi:ev-plug-type2"),
-        CTEKSensor(session, host, port, auth, "charger_outlet_1_energy", "Charger Outlet 1 Energy", "/evse", "0.evse.0.energy", unit_of_measurement="kWh", icon="mdi:ev-plug-type2", transform=lambda x: x / 1000), #Total energy used when charging, in kWh
-        CTEKSensor(session, host, port, auth, "charger_outlet_1_power", "Charger Outlet 1 Power", "/evse", "0.evse.0.power", unit_of_measurement="kW", icon="mdi:ev-plug-type2", transform=lambda x: x / 1000), # Current kW usage
-        CTEKSensor(session, host, port, auth, "charger_outlet_1_current_phase_1", "Charger Outlet 1 Current Phase 1", "/evse", "0.evse.0.current.0", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
-        CTEKSensor(session, host, port, auth, "charger_outlet_1_current_phase_2", "Charger Outlet 1 Current Phase 2", "/evse", "0.evse.0.current.1", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
-        CTEKSensor(session, host, port, auth, "charger_outlet_1_current_phase_3", "Charger Outlet 1 Current Phase 3", "/evse", "0.evse.0.current.2", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "chargebox_connection_status", "Chargebox Connection Status", "/evse", "0.connection_status", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "chargebox_outlet_1_state", "Chargebox Outlet 1 State", "/evse", "0.evse.0.state", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "chargebox_outlet_1_energy", "Chargebox Outlet 1 Energy", "/evse", "0.evse.0.energy", unit_of_measurement="kWh", icon="mdi:ev-plug-type2", transform=lambda x: x / 1000), #Total energy used when charging, in kWh
+        CTEKSensor(session, host, port, auth, "chargebox_outlet_1_power", "Chargebox Outlet 1 Power", "/evse", "0.evse.0.power", unit_of_measurement="kW", icon="mdi:ev-plug-type2", transform=lambda x: x / 1000), # Current kW usage
+        CTEKSensor(session, host, port, auth, "chargebox_outlet_1_current_phase_1", "Chargebox Outlet 1 Current Phase 1", "/evse", "0.evse.0.current.0", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "chargebox_outlet_1_current_phase_2", "Chargebox Outlet 1 Current Phase 2", "/evse", "0.evse.0.current.1", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "chargebox_outlet_1_current_phase_3", "Chargebox Outlet 1 Current Phase 3", "/evse", "0.evse.0.current.2", unit_of_measurement="A", icon="mdi:ev-plug-type2"),
+        
+        # Chargebox endpoint entities
+        CTEKSensor(session, host, port, auth, "chargebox_serial", "Chargebox Serial", "/status", "chargeboxInfo.serial", icon="mdi:numeric"),
+        CTEKSensor(session, host, port, auth, "chargebox_firmware", "Chargebox Firmware", "/status", "chargeboxInfo.firmware", icon="mdi:update"),
+        CTEKSensor(session, host, port, auth, "chargebox_endpoint", "Chargebox Endpoint", "/status", "chargeboxInfo.endpoint", icon="mdi:link"),
+        CTEKSensor(session, host, port, auth, "chargebox_port", "Chargebox Endpoint TCP Port", "/status", "chargeboxInfo.port", icon="mdi:lan"),
+
+
+        # Disabled entities
+#        CTEKSensor(session, host, port, auth, "chargebox_pinned", "Chargebox Pinned", "/status", "chargeboxInfo.pinned", icon="mdi:pin"),
+#        CTEKSensor(session, host, port, auth, "ota_status", "OTA Status", "/status", "otaInfo.status", icon="mdi:download"),
+#        CTEKSensor(session, host, port, auth, "ota_version", "OTA Version", "/status", "otaInfo.version", icon="mdi:tag"),
+#        CTEKSensor(session, host, port, auth, "ota_progress", "OTA Progress", "/status", "otaInfo.progress", unit_of_measurement="%", icon="mdi:progress-clock"),
+
         
     ]
 
@@ -106,7 +122,7 @@ class CTEKSensor(SensorEntity):
     @property
     def state(self):
         """Return the current state of the sensor."""
-        if self._sensor_id == "charger_outlet_1_state":
+        if self._sensor_id == "chargebox_outlet_1_state":
             state_mapping = {
                 "0": "Available",
                 0: "Available",
@@ -143,7 +159,7 @@ class CTEKSensor(SensorEntity):
     @property
     def device_class(self):
         """Return the device class of the sensor."""
-        if self._sensor_id in ["total_energy_import", "total_energy_export", "charger_outlet_1_energy"]:
+        if self._sensor_id in ["total_energy_import", "total_energy_export", "chargebox_outlet_1_energy"]:
             return "energy"
         if self._sensor_id in ["active_power_in", "active_power_out"]:
             return "power"
@@ -152,7 +168,7 @@ class CTEKSensor(SensorEntity):
     @property
     def state_class(self):
         """Return the state class of the sensor."""
-        if self._sensor_id in ["total_energy_import", "total_energy_export", "charger_outlet_1_energy"]:
+        if self._sensor_id in ["total_energy_import", "total_energy_export", "chargebox_outlet_1_energy"]:
             return "total_increasing"
         if self._sensor_id in ["active_power_in", "active_power_out"]:
             return "measurement"
