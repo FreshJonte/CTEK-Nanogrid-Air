@@ -10,11 +10,12 @@ Home Assistant Custom Component for reading data from CTEK Nanogrid Air
 
 ## Features
 This integration provides the following sensor data for your CTEK Nanogrid Air devices:
-- Charger connection status and outlet states.
-- Chargebox state and WiFi signal strength.
-- Power metrics such as active power, current, and voltage for all phases.
-- Energy import/export statistics.
-- Device serial number, firmware, and MAC address.
+* Chargebox connection status and outlet states.
+* Chargebox state, endpoint and TCP port, and WiFi signal strength.
+* Power metrics such as active power, current, and voltage for all phases.
+* Energy import/export statistics.
+* Device serial number, firmware, and MAC address.
+* Meter vendor, type and id.
 
 
 ## Installation
@@ -23,7 +24,7 @@ This integration provides the following sensor data for your CTEK Nanogrid Air d
 1. Open Home Assistant and go to the **HACS** section in the sidebar.
 2. Click on the **Custom repositories** tab (found under **Settings** in HACS).
 3. In the **Custom repositories** section, click the **+** button in the bottom right corner.
-4. Enter the following repository URL: https://github.com/FreshJonte/CTEK-Nanogrid-Air
+4. Enter the following repository URL: [https://github.com/FreshJonte/CTEK-Nanogrid-Air](https://github.com/FreshJonte/CTEK-Nanogrid-Air)
 5. Select **Integration** as the Type.
 6. Click **Add**.
 7. Go back to the **Integrations** tab in HACS and click the **+** button at the bottom right.
@@ -57,33 +58,39 @@ If the configuration is correct, sensors will automatically appear in Home Assis
 ## Sensors Provided
 Here are the sensors available with this integration:
 
-| Sensor ID                          | Friendly Name                | Description                                                           |
-|------------------------------------|------------------------------|-----------------------------------------------------------------------|
-| `charger_serial`                   | Charger Serial               | Serial number of the charger.                                         |
-| `charger_connection_status`        | Charger Connection Status    | Current connection status of the charger.                             |
-| `charger_outlet_1_state`           | Charger Outlet 1 State       | Current state of the charger outlet 1.                                |
-| `charger_outlet_1_energy`          | Charger Outlet 1 Energy      | Total energy used by charger outlet 1 in kilowatt-hours (kWh).         |
-| `charger_outlet_1_power`           | Charger Outlet 1 Power       | Current power usage of charger outlet 1 in kilowatts (kW).            |
-| `charger_outlet_1_current_phase_1` | Charger Outlet 1 Current Phase 1 | Current output from charger outlet 1 in Phase 1 (Amperes).       |
-| `charger_outlet_1_current_phase_2` | Charger Outlet 1 Current Phase 2 | Current output from charger outlet 1 in Phase 2 (Amperes).       |
-| `charger_outlet_1_current_phase_3` | Charger Outlet 1 Current Phase 3 | Current output from charger outlet 1 in Phase 3 (Amperes).       |
-| `device_serial`                    | Device Serial                | The serial number of the Nanogrid Air device.                                      |
-| `device_firmware`                  | Device Firmware              | Firmware version of the Nanogrid Air device.                                       |
-| `device_mac`                       | Device MAC                   | MAC address of the Nanogrid Air device.                                            |
-| `chargebox_state`                  | Chargebox State              | Current state of the chargebox.                                       |
-| `wifi_ssid`                        | WiFi SSID                    | SSID of the connected WiFi network.                                   |
-| `wifi_rssi`                        | WiFi Signal Strength         | WiFi RSSI in dBm, indicating signal strength.                         |
-| `active_power_in_watt`             | Active Power In (Watt)       | Incoming power to the system in Watts.                                |
-| `active_power_in_kw`               | Active Power In (kW)         | Incoming power to the system in kilowatts.                            |
-| `active_power_out`                 | Active Power Out             | Outgoing power from the system in Watts.                              |
-| `current_phase_1`                  | Current Phase 1              | Electrical current in Phase 1 in Amperes (A).                         |
-| `current_phase_2`                  | Current Phase 2              | Electrical current in Phase 2 in Amperes (A).                         |
-| `current_phase_3`                  | Current Phase 3              | Electrical current in Phase 3 in Amperes (A).                         |
-| `voltage_phase_1`                  | Voltage Phase 1              | Voltage in Phase 1 in Volts (V).                                      |
-| `voltage_phase_2`                  | Voltage Phase 2              | Voltage in Phase 2 in Volts (V).                                      |
-| `voltage_phase_3`                  | Voltage Phase 3              | Voltage in Phase 3 in Volts (V).                                      |
-| `total_energy_import`              | Total Energy Import          | Total imported energy measured in kilowatt-hours (kWh).               |
-| `total_energy_export`              | Total Energy Export          | Total exported energy measured in kilowatt-hours (kWh).               |
+| Sensor ID                            | Friendly Name                      | Description                                                       |
+| ------------------------------------ | ---------------------------------- | ----------------------------------------------------------------- |
+| `chargebox_serial`                   | Chargebox Serial                   | Serial number of the chargebox.                                   |
+| `chargebox_firmware`                 | Chargebox Firmware                 | Firmware version of the chargebox.                                |
+| `chargebox_state`                    | Chargebox State                    | Connection state between Nanogrid Air and chargebox               |
+| `chargebox_endpoint`                 | Chargebox Endpoint                 | Endpoint (URI) used by the chargebox (e.g. `mqtt://...`).         |
+| `chargebox_port`                     | Chargebox Endpoint TCP Port        | TCP port for the chargebox endpoint.                              |
+| `chargebox_connection_status`        | Chargebox Connection Status        | Current connection status of the chargebox EVSE.                  |
+| `chargebox_outlet_1_state`           | Chargebox Outlet 1 State           | Current state of the chargebox outlet 1.                          |
+| `chargebox_outlet_1_energy`          | Chargebox Outlet 1 Energy          | Total energy used by chargebox outlet 1 in kilowatt-hours (kWh).  |
+| `chargebox_outlet_1_power`           | Chargebox Outlet 1 Power           | Current power usage of chargebox outlet 1 in kilowatts (kW).      |
+| `chargebox_outlet_1_current_phase_1` | Chargebox Outlet 1 Current Phase 1 | Current output from outlet 1 in Phase 1 (Amperes).                |
+| `chargebox_outlet_1_current_phase_2` | Chargebox Outlet 1 Current Phase 2 | Current output from outlet 1 in Phase 2 (Amperes).                |
+| `chargebox_outlet_1_current_phase_3` | Chargebox Outlet 1 Current Phase 3 | Current output from outlet 1 in Phase 3 (Amperes).                |
+| `device_serial`                      | Device Serial                      | The serial number of the Nanogrid Air device.                     |
+| `device_firmware`                    | Device Firmware                    | Firmware version of the Nanogrid Air device.                      |
+| `device_mac`                         | Device MAC                         | MAC address of the Nanogrid Air device.                           |												| `wifi_ssid`                          | WiFi SSID                          | SSID of the connected WiFi network.                               |
+| `wifi_rssi`                          | WiFi Signal Strength               | WiFi RSSI in dBm, indicating signal strength.                     |
+| `active_power_in_watt`               | Active Power In (Watt)             | Incoming power to the system in Watts.                            |
+| `active_power_in_kw`                 | Active Power In (kW)               | Incoming power to the system in kilowatts.                        |
+| `active_power_out`                   | Active Power Out                   | Outgoing power from the system in Watts.                          |
+| `current_phase_1`                    | Current Phase 1                    | Electrical current in Phase 1 in Amperes (A).                     |
+| `current_phase_2`                    | Current Phase 2                    | Electrical current in Phase 2 in Amperes (A).                     |
+| `current_phase_3`                    | Current Phase 3                    | Electrical current in Phase 3 in Amperes (A).                     |
+| `voltage_phase_1`                    | Voltage Phase 1                    | Voltage in Phase 1 in Volts (V).                                  |
+| `voltage_phase_2`                    | Voltage Phase 2                    | Voltage in Phase 2 in Volts (V).                                  |
+| `voltage_phase_3`                    | Voltage Phase 3                    | Voltage in Phase 3 in Volts (V).                                  |
+| `total_energy_import`                | Total Energy Import                | Total imported energy measured in kilowatt-hours (kWh).           |
+| `total_energy_export`                | Total Energy Export                | Total exported energy measured in kilowatt-hours (kWh).           |
+| `meter_vendor`                       | Meter Vendor                       | Vendor name of the attached meter.                                |
+| `meter_type`                         | Meter Type                         | Meter model/type.                                                 |
+| `meter_id`                           | Meter ID                           | Meter identifier.                                                 |
+
 
 ## Firmware Update
 
