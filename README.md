@@ -87,7 +87,7 @@ Here are the sensors available with this integration:
 
 ## Firmware Update
 
-Ensure your device is running the latest firmware. For the best experience, it is recommended to update to **version 1.3.1**, which is the latest tested version.
+Ensure your device is running the latest firmware. For the best experience, it is recommended to update to **version 1.3.2**, which is the latest tested version.
 
 You can download the latest firmware and instructions from the following links:
 
