@@ -31,7 +31,6 @@ async def async_setup_entry(hass, entry, async_add_entities):
         CTEKSensor(session, host, port, auth, "device_serial", "Device Serial", "/status", "deviceInfo.serial", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:numeric"),
         CTEKSensor(session, host, port, auth, "device_firmware", "Device Firmware", "/status", "deviceInfo.firmware", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:update"),
         CTEKSensor(session, host, port, auth, "device_mac", "Device MAC", "/status", "deviceInfo.mac", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:router"),
-        CTEKSensor(session, host, port, auth, "chargebox_state", "Chargebox State", "/status", "chargeboxInfo.state", device_key=device_key, icon="mdi:power"),
         CTEKSensor(session, host, port, auth, "wifi_ssid", "WiFi SSID", "/status", "wifiInfo.ssid", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:wifi"),
         CTEKSensor(session, host, port, auth, "wifi_rssi", "WiFi Signal Strength", "/status", "wifiInfo.rssi", unit_of_measurement="dBm", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:signal"),
 
@@ -47,12 +46,12 @@ async def async_setup_entry(hass, entry, async_add_entities):
         CTEKSensor(session, host, port, auth, "voltage_phase_3", "Voltage Phase 3", "/meter", "voltage.2", unit_of_measurement="V", device_key=device_key, icon="mdi:flash"),
         CTEKSensor(session, host, port, auth, "total_energy_import", "Total Energy Import", "/meter", "totalEnergyActiveImport", unit_of_measurement="kWh", device_key=device_key, icon="mdi:flash"),
         CTEKSensor(session, host, port, auth, "total_energy_export", "Total Energy Export", "/meter", "totalEnergyActiveExport", unit_of_measurement="kWh", device_key=device_key, icon="mdi:flash-off"),
-        CTEKSensor(session, host, port, auth, "meter_vendor", "Meter Vendor", "/status", "meterInfo.vendor", device_key=device_key, icon="mdi:meter-electric"),
-        CTEKSensor(session, host, port, auth, "meter_type", "Meter Type", "/status", "meterInfo.type", device_key=device_key, icon="mdi:meter-electric"),
-        CTEKSensor(session, host, port, auth, "meter_id", "Meter ID", "/status", "meterInfo.id", device_key=device_key, icon="mdi:meter-electric"),
+        CTEKSensor(session, host, port, auth, "meter_vendor", "Meter Vendor", "/status", "meterInfo.vendor", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:meter-electric"),
+        CTEKSensor(session, host, port, auth, "meter_type", "Meter Type", "/status", "meterInfo.type", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:meter-electric"),
+        CTEKSensor(session, host, port, auth, "meter_id", "Meter ID", "/status", "meterInfo.id", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:meter-electric"),
 
         # EVSE endpoint entities
-        CTEKSensor(session, host, port, auth, "chargebox_connection_status", "Chargebox Connection Status", "/evse", "0.connection_status", device_key=device_key, icon="mdi:ev-plug-type2"),
+        CTEKSensor(session, host, port, auth, "chargebox_connection_status", "Chargebox Network Connection Status", "/evse", "0.connection_status", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:lan"),
         CTEKSensor(session, host, port, auth, "chargebox_outlet_1_state", "Chargebox Outlet 1 State", "/evse", "0.evse.0.state", device_key=device_key, icon="mdi:ev-plug-type2"),
         CTEKSensor(session, host, port, auth, "chargebox_outlet_1_energy", "Chargebox Outlet 1 Energy", "/evse", "0.evse.0.energy", unit_of_measurement="kWh", device_key=device_key, icon="mdi:ev-plug-type2", transform=lambda x: x / 1000), #Total energy used when charging, in kWh
         CTEKSensor(session, host, port, auth, "chargebox_outlet_1_power", "Chargebox Outlet 1 Power", "/evse", "0.evse.0.power", unit_of_measurement="kW", device_key=device_key, icon="mdi:ev-plug-type2", transform=lambda x: x / 1000), # Current kW usage
@@ -65,6 +64,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
         CTEKSensor(session, host, port, auth, "chargebox_firmware", "Chargebox Firmware", "/status", "chargeboxInfo.firmware", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:update"),
         CTEKSensor(session, host, port, auth, "chargebox_endpoint", "Chargebox Endpoint", "/status", "chargeboxInfo.endpoint", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:link"),
         CTEKSensor(session, host, port, auth, "chargebox_port", "Chargebox Endpoint TCP Port", "/status", "chargeboxInfo.port", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:lan"),
+        CTEKSensor(session, host, port, auth, "chargebox_state", "Chargebox State", "/status", "chargeboxInfo.state", device_key=device_key, entity_category=EntityCategory.DIAGNOSTIC, icon="mdi:lan"),
+
     ]
 
     async_add_entities(sensors, True)
