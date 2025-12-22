@@ -109,36 +109,52 @@ For detailed information on the CTEK Nanogrid Air API, you can refer to the offi
 
 ## Troubleshooting
 
-### Common Issues
+1. **Integration won't load**
 
-1. **Integration Fails to Load**
-   - Ensure the `ctek_nanogrid_air` folder is in the correct location (`custom_components` directory).
-   - Check for typos in the configuration settings (host, port, username, password).
-   - Review the Home Assistant logs for errors (`Settings > System > Logs`).
+   * Verify `custom_components/ctek_nanogrid_air/` is placed correctly and restart HA.
+   * Check configuration (Host, Port — default `80`, Username — default `ctek`, Password).
 
-2. **Using `curl` for Troubleshooting**
-   If you're having trouble with the integration or sensors not updating, you can verify that the device is responding correctly by running the following `curl` command in your terminal:
+2. **Verify device responds (fast test)**
 
-   ```bash
-   curl -u ctek:password http://your.ip.goes.here/status/
+   * From any terminal:
+     `curl -u ctek:password http://<CTEK_IP>/status/`
+   * If you get JSON → device OK; if not, check IP/port, credentials, firewall.
 
-3. **"Offline" State for Sensors**
-   - Verify that the CTEK device is online and accessible at the specified IP and port.
-   - Check your network settings to ensure the Home Assistant instance can communicate with the device.
-   - Ensure the username and password are correct for accessing the CTEK API.
+3. **Sensors show “offline”**
 
-3. **Error Logs**
-   If you encounter issues, review the logs:
-   - Go to **Settings > System > Logs**.
-   - Look for entries related to `ctek_nanogrid_air` to identify the problem.
+   * Confirm network reachability from Home Assistant to the device (ping/curl from HA).
+   * Ensure correct API credentials and correct port.
+   * Check device firmware — update to the tested firmware if needed.
 
-### Debugging
-Enable debug logging for this integration to gather more information:
-1. Add the following to your `configuration.yaml`:
-```yaml
-logger:
-  default: info
-  logs:
-    custom_components.ctek_nanogrid_air: debug
+4. **Where to look for errors**
 
+   * Home Assistant logs: *Settings → System → Logs*.
+   * Add-on or Supervisor logs if you installed via HACS/Supervisor.
 
+5. **Collect more info (enable debug)**
+   Add to `configuration.yaml` (restart HA afterwards):
+
+   ```yaml
+   logger:
+     default: info
+     logs:
+       custom_components.ctek_nanogrid_air: debug
+   ```
+
+   Then reproduce the issue and copy relevant log lines.
+
+6. **Network / firewall / Docker notes**
+
+   * If HA runs in Docker, ensure container can reach the device network and port 80 is open.
+   * If using VLANs or IoT isolation, whitelist HA ↔ CTEK traffic.
+
+# Quick: get a terminal in Home Assistant
+
+Use the official **Terminal & SSH** add-on (Supervisor / Home Assistant OS) — simplest way to run `curl`.
+
+Steps (very short):
+
+1. Enable **Advanced Mode** in your user profile.
+2. Go to **Settings → Add-ons → Add-on Store**, find **Terminal & SSH**, click **Install**.
+3. In the add-on **Configuration**: set `username` + `password` or paste `authorized_keys`. Optionally enable “Show in sidebar” and “Start on boot”.
+4. Start the add-on and click **Open Web UI** to get a terminal. Use it to run the `curl` command above or `ha core logs`.
