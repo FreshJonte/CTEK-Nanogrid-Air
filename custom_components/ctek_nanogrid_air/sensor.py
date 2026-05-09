@@ -188,7 +188,7 @@ class CTEKSensor(SensorEntity):
         """Return the device class of the sensor."""
         if self._sensor_id in ["total_energy_import", "total_energy_export", "chargebox_outlet_1_energy"]:
             return "energy"
-        if self._sensor_id in ["active_power_in", "active_power_out"]:
+        if self._sensor_id in ["active_power_in_watt", "active_power_in_kw", "active_power_out"]:
             return "power"
         return None
 
@@ -197,7 +197,7 @@ class CTEKSensor(SensorEntity):
         """Return the state class of the sensor."""
         if self._sensor_id in ["total_energy_import", "total_energy_export", "chargebox_outlet_1_energy"]:
             return "total_increasing"
-        if self._sensor_id in ["active_power_in", "active_power_out"]:
+        if self._sensor_id in ["active_power_in_watt", "active_power_in_kw", "active_power_out"]:
             return "measurement"
         return None
 
