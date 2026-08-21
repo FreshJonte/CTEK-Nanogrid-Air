@@ -199,6 +199,12 @@ class CTEKSensor(SensorEntity):
             "chargebox_outlet_1_current_phase_3",
         ]:
             return "current"
+        if self._sensor_id in [
+            "voltage_phase_1",
+            "voltage_phase_2",
+            "voltage_phase_3",
+        ]:
+            return "voltage"
         return None
 
     @property
@@ -217,6 +223,9 @@ class CTEKSensor(SensorEntity):
             "chargebox_outlet_1_current_phase_1",
             "chargebox_outlet_1_current_phase_2",
             "chargebox_outlet_1_current_phase_3",
+            "voltage_phase_1",
+            "voltage_phase_2",
+            "voltage_phase_3",
         ]:
             return "measurement"
         return None
