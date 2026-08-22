@@ -254,10 +254,27 @@ class CTEKSensor(SensorEntity):
                 data = await response.json()
                 raw_value = self._extract_value(data, self._json_path)
                 if self.transform and raw_value is not None:
-                    self._state = self.transform(raw_value)
+                    new_state = self.transform(raw_value)
                 else:
-                    self._state = raw_value
+                    new_state = raw_value
 
+                # Ignore transient zero readings after a valid cumulative energy
+                # value. Publishing zero would make Home Assistant interpret the
+                # next valid reading as a new meter cycle and inflate consumption.
+                if (
+                    self._sensor_id == "chargebox_outlet_1_energy"
+                    and new_state == 0
+                    and self._state not in (None, 0)
+                ):
+                    _LOGGER.warning(
+                        "Ignoring unexpected zero value for %s; "
+                        "keeping the previous value of %s",
+                        self._name,
+                        self._state,
+                    )
+                    return
+
+                self._state = new_state
                 _LOGGER.debug(f"Updated state for {self._name}: {self._state}")
 
         except asyncio.TimeoutError:
