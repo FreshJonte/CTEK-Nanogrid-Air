@@ -1,0 +1,9 @@
+# Baseline matches the Home Assistant version family declared in hacs.json.
+homeassistant==2024.12.5
+# Compatible transitive dependencies for this older HA baseline.
+habluetooth==3.6.0
+bluetooth-data-tools==1.28.4
+pycares==4.11.0
+pytest==9.1.1
+pytest-asyncio==1.4.0
+ruff==0.16.8
