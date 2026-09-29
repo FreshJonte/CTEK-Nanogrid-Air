@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Anslut till CTEK Nanogrid Air",
+        "description": "Ange enhetens värdnamn eller IP-adress utan http:// eller portnummer.",
+        "data": {
+          "host": "Värd",
+          "port": "Port",
+          "username": "Användarnamn",
+          "password": "Lösenord"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Uppdatera inloggningsuppgifter",
+        "description": "Ange aktuella inloggningsuppgifter. Behåll enhetens befintliga adress och port.",
+        "data": {
+          "host": "Värd",
+          "port": "Port",
+          "username": "Användarnamn",
+          "password": "Lösenord"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kunde inte ansluta eller läsa enhetsinformationen.",
+      "invalid_auth": "Enheten avvisade användarnamnet eller lösenordet.",
+      "invalid_input": "Ange ett giltigt värdnamn eller en IP-adress och en port mellan 1 och 65535.",
+      "address_changed": "Behåll befintlig värd och port när inloggningsuppgifterna uppdateras."
+    },
+    "abort": {
+      "already_configured": "Enheten är redan konfigurerad.",
+      "reauth_successful": "Inloggningsuppgifterna har uppdaterats."
+    }
+  }
+}

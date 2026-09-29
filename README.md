@@ -94,6 +94,44 @@ Here are the sensors available with this integration:
 | `meter_id`                           | Meter ID                           | Meter identifier.                                                 |
 
 
+## Polling and error handling
+
+The integration shares one update coordinator across all 31 sensors. It reads
+`/status/`, `/meter/`, and `/evse/` once per cycle, with a 30-second polling
+interval and a 10-second timeout per request. Requests are sequential to limit
+load on the device. The interval starts after the previous cycle completes.
+
+If one endpoint fails, only its sensors become unavailable. If all endpoints
+fail during startup, Home Assistant retries setup. Invalid or missing individual
+measurements become unknown instead of being recorded as zero. Authentication
+errors prompt you to update the credentials. Configuration validates the address,
+port, credentials, and `/status/` response before saving, and rejects duplicate
+host/port entries.
+
+Existing sensor unique IDs, device grouping, names, units, and conversions are
+preserved. The outlet energy sensor retains its last valid nonzero reading when
+the device temporarily reports zero, including after a missing reading or network
+outage. This safeguard is in memory and does not persist through a restart.
+
+## Development and tests
+
+Use Python 3.12 for the Home Assistant 2024.12 baseline:
+
+```shell
+python -m venv .venv
+# Activate the virtual environment, then:
+python -m pip install -r requirements-test.txt
+python -m pytest -q
+python -m ruff check .
+python -m ruff format --check .
+```
+
+Tests use actual Home Assistant classes, mocked application services, and a local
+HTTP server. They do not require a CTEK device. GitHub Actions runs these checks
+on Linux. A live Home Assistant installation and physical device should also be
+tested before releasing, including recovery from device disconnection and an
+actual charging session.
+
 ## Firmware Update
 
 Ensure your device is running the latest firmware. For the best experience, it is recommended to update to **version 1.3.2**, which is the latest tested version.
