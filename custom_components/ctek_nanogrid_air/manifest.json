@@ -8,7 +8,7 @@
     "@FreshJonte"
   ],
   "config_flow": true,
-  "version": "1.2.0-beta.1",
+  "version": "1.2.0",
   "iot_class": "local_polling",
   "integration_type": "device",
   "issue_tracker": "https://github.com/FreshJonte/CTEK-Nanogrid-Air/issues"
