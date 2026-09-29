@@ -60,3 +60,18 @@ async def test_failed_setup_does_not_forward_platforms():
             await async_setup_entry(hass, entry)
     assert not hass.data[DOMAIN]
     hass.config_entries.async_forward_entry_setups.assert_not_awaited()
+
+
+async def test_setup_without_credentials():
+    hass = MagicMock()
+    hass.data = {}
+    hass.config_entries.async_forward_entry_setups = AsyncMock()
+    entry = SimpleNamespace(entry_id="anonymous", data={"host": "device"})
+    with (
+        patch(f"{MODULE}.async_get_clientsession"),
+        patch(f"{MODULE}.NanogridApi") as api,
+        patch(f"{MODULE}.NanogridCoordinator") as cls,
+    ):
+        cls.return_value.async_config_entry_first_refresh = AsyncMock()
+        assert await async_setup_entry(hass, entry)
+    assert api.call_args.args[3:] == (None, None)

@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Anslut till CTEK Nanogrid Air",
-        "description": "Ange enhetens värdnamn eller IP-adress utan http:// eller portnummer.",
+        "description": "Ange enhetens värdnamn eller IP-adress utan http:// eller portnummer. De flesta enheter tillåter API-läsning utan inloggning; lämna användarnamn och lösenord tomma om de inte krävs.",
         "data": {
           "host": "Värd",
           "port": "Port",
@@ -13,7 +13,7 @@
       },
       "reauth_confirm": {
         "title": "Uppdatera inloggningsuppgifter",
-        "description": "Ange aktuella inloggningsuppgifter. Behåll enhetens befintliga adress och port.",
+        "description": "Behåll enhetens befintliga adress och port. Ange både användarnamn och lösenord bara om enheten kräver inloggning till API:t.",
         "data": {
           "host": "Värd",
           "port": "Port",
@@ -24,7 +24,7 @@
     },
     "error": {
       "cannot_connect": "Kunde inte ansluta eller läsa enhetsinformationen.",
-      "invalid_auth": "Enheten avvisade användarnamnet eller lösenordet.",
+      "invalid_auth": "Enheten kräver inloggning till API:t eller avvisade angivna uppgifter.",
       "invalid_input": "Ange ett giltigt värdnamn eller en IP-adress och en port mellan 1 och 65535.",
       "address_changed": "Behåll befintlig värd och port när inloggningsuppgifterna uppdateras."
     },

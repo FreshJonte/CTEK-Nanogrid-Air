@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Connect to CTEK Nanogrid Air",
-        "description": "Enter the device hostname or IP address without http:// or a port.",
+        "description": "Enter the device hostname or IP address without http:// or a port. Most devices allow API reads without login; leave username and password empty unless your device requires them.",
         "data": {
           "host": "Host",
           "port": "Port",
@@ -13,7 +13,7 @@
       },
       "reauth_confirm": {
         "title": "Update Nanogrid credentials",
-        "description": "Enter the current credentials. Keep the existing device address and port.",
+        "description": "Keep the existing device address and port. Enter both username and password only if your device requires API login.",
         "data": {
           "host": "Host",
           "port": "Port",
@@ -24,7 +24,7 @@
     },
     "error": {
       "cannot_connect": "Unable to connect or read device information.",
-      "invalid_auth": "The device rejected the username or password.",
+      "invalid_auth": "The device requires API login or rejected the supplied credentials.",
       "invalid_input": "Enter a valid hostname or IP address and a port between 1 and 65535.",
       "address_changed": "Keep the existing host and port when updating credentials."
     },

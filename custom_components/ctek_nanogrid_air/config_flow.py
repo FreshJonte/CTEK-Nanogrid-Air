@@ -32,8 +32,8 @@ def input_schema(defaults):
             vol.Optional("port", default=defaults.get("port", DEFAULT_PORT)): vol.All(
                 vol.Coerce(int), vol.Range(min=1, max=65535)
             ),
-            vol.Required("username", default=defaults.get("username", "ctek")): str,
-            vol.Required("password"): str,
+            vol.Optional("username"): str,
+            vol.Optional("password"): str,
         }
     )
 
@@ -60,8 +60,15 @@ class CTEKNanogridAirConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 user_input = input_schema(defaults)(user_input)
                 user_input["host"] = normalize_host(user_input["host"])
-                if ":" in user_input["username"]:
+                username = user_input.get("username", "").strip()
+                password = user_input.get("password", "")
+                if bool(username) != bool(password) or ":" in username:
                     raise vol.Invalid("A Basic Auth username cannot contain a colon")
+                user_input.pop("username", None)
+                user_input.pop("password", None)
+                if username:
+                    user_input["username"] = username
+                    user_input["password"] = password
             except vol.Invalid:
                 errors["base"] = "invalid_input"
             else:
@@ -106,8 +113,8 @@ class CTEKNanogridAirConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         return self.async_update_reload_and_abort(
                             reauth_entry,
                             data_updates={
-                                "username": user_input["username"],
-                                "password": user_input["password"],
+                                "username": user_input.get("username", ""),
+                                "password": user_input.get("password", ""),
                             },
                         )
                     else:

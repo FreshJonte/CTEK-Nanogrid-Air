@@ -82,6 +82,34 @@ async def test_validate_before_save(flow, error, expected):
     get.assert_awaited_once_with("/status")
 
 
+async def test_anonymous_setup_does_not_store_credentials(flow):
+    with (
+        patch(f"{MODULE}.async_get_clientsession"),
+        patch(f"{MODULE}.NanogridApi.async_get", new_callable=AsyncMock) as get,
+    ):
+        result = await flow.async_step_user({"host": "device.local", "port": 80})
+    assert result["type"] == "create_entry"
+    assert result["data"] == {"host": "device.local", "port": 80}
+    get.assert_awaited_once_with("/status")
+
+
+@pytest.mark.parametrize(
+    "credentials",
+    [
+        {"username": "ctek"},
+        {"password": "secret"},
+        {"username": "ctek", "password": ""},
+    ],
+)
+async def test_requires_complete_credential_pair(flow, credentials):
+    with patch(f"{MODULE}.NanogridApi") as api:
+        result = await flow.async_step_user(
+            {"host": "device.local", "port": 80, **credentials}
+        )
+    assert result["errors"] == {"base": "invalid_input"}
+    api.assert_not_called()
+
+
 async def test_duplicate(flow):
     flow.hass.config_entries.async_entries.return_value = [
         SimpleNamespace(entry_id="old", data=INPUT)
