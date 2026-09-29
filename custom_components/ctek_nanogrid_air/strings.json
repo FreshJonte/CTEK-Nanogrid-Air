@@ -3,12 +3,12 @@
     "step": {
       "user": {
         "title": "Connect to CTEK Nanogrid Air",
-        "description": "Enter the device hostname or IP address without http:// or a port. Most devices allow API reads without login; leave username and password empty unless your device requires them.",
+        "description": "Enter the device hostname or IP address without http:// or a port. Username and password are optional: leave both blank to connect without API login. Enter both only if your device requires login.",
         "data": {
           "host": "Host",
           "port": "Port",
-          "username": "Username",
-          "password": "Password"
+          "username": "Username (optional)",
+          "password": "Password (optional)"
         }
       },
       "reauth_confirm": {
@@ -17,8 +17,8 @@
         "data": {
           "host": "Host",
           "port": "Port",
-          "username": "Username",
-          "password": "Password"
+          "username": "Username (optional)",
+          "password": "Password (optional)"
         }
       }
     },

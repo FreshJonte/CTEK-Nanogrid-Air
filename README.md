@@ -51,11 +51,14 @@ If you prefer to install the integration manually, follow these steps:
 3. Enter the following details:
 - **Host**: The IP address of your CTEK device.
 - **Port**: The API port (default: `80`).
-- **Username**: Your API username (default: `ctek`).
-- **Password**: Your API password.
+- **Username** (optional): Leave blank unless your device requires API authentication.
+- **Password** (optional): Leave blank unless your device requires API authentication. If needed, enter both username and password.
 4. Click **Submit**.
 
 If the configuration is correct, sensors will automatically appear in Home Assistant.
+The integration first tries API requests without authentication. If the device
+requires HTTP Basic Auth, provide both credentials; the integration retries
+those requests with them.
 
 ## Sensors Provided
 Here are the sensors available with this integration:
@@ -104,9 +107,9 @@ load on the device. The interval starts after the previous cycle completes.
 If one endpoint fails, only its sensors become unavailable. If all endpoints
 fail during startup, Home Assistant retries setup. Invalid or missing individual
 measurements become unknown instead of being recorded as zero. Authentication
-errors prompt you to update the credentials. Configuration validates the address,
-port, credentials, and `/status/` response before saving, and rejects duplicate
-host/port entries.
+errors prompt you to provide or update credentials when required. Configuration
+validates the address, port, optional credentials, and `/status/` response before
+saving, and rejects duplicate host/port entries.
 
 Existing sensor unique IDs, device grouping, names, units, and conversions are
 preserved. The outlet energy sensor retains its last valid nonzero reading when
@@ -150,18 +153,18 @@ For detailed information on the CTEK Nanogrid Air API, you can refer to the offi
 1. **Integration won't load**
 
    * Verify `custom_components/ctek_nanogrid_air/` is placed correctly and restart HA.
-   * Check configuration (Host, Port — default `80`, Username — default `ctek`, Password).
+   * Check the host and port (default `80`). Username and password are optional; if authentication is required, enter both.
 
 2. **Verify device responds (fast test)**
 
-   * From any terminal:
-     `curl -u ctek:password http://<CTEK_IP>/status/`
-   * If you get JSON → device OK; if not, check IP/port, credentials, firewall.
+   * First try without credentials: `curl http://<CTEK_IP>/status/`
+   * Only if the device requires authentication, try: `curl -u ctek http://<CTEK_IP>/status/` (replace `ctek` with your API username if different; `curl` prompts for the password).
+   * If you get JSON, the device responds. Otherwise, check the IP address, port, firewall, and credentials if applicable.
 
 3. **Sensors show “offline”**
 
    * Confirm network reachability from Home Assistant to the device (ping/curl from HA).
-   * Ensure correct API credentials and correct port.
+   * Check the port. If the device requires authentication, check both API credentials.
    * Check device firmware — update to the tested firmware if needed.
 
 4. **Where to look for errors**
@@ -195,4 +198,4 @@ Steps (very short):
 1. Enable **Advanced Mode** in your user profile.
 2. Go to **Settings → Add-ons → Add-on Store**, find **Terminal & SSH**, click **Install**.
 3. In the add-on **Configuration**: set `username` + `password` or paste `authorized_keys`. Optionally enable “Show in sidebar” and “Start on boot”.
-4. Start the add-on and click **Open Web UI** to get a terminal. Use it to run the `curl` command above or `ha core logs`.
+4. Start the add-on and click **Open Web UI** to get a terminal. Use it to run the appropriate `curl` command above or `ha core logs`.
